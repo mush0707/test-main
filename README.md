@@ -30,8 +30,6 @@ example after success:
 
 ``Client secret: XChdmgt6UftBT6SjMkZ6q6P0MuHUxQDCaIRIoXQm``
 
-Client info need to connected microservices (Reward microservice)
-
 API documentation <a href="http://192.168.49.2:30009/api/documentation">Swagger documentation</a>
 
 
