@@ -25,7 +25,7 @@ spec:
         fsGroup: 82
       initContainers:
         - name: database-migrations
-          image: client-backend:43
+          image: client-backend:50
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
@@ -42,7 +42,7 @@ spec:
       containers:
         - name: nginx
           imagePullPolicy: IfNotPresent
-          image: client-frontend:42
+          image: client-frontend:50
           resources:
             requests:
               cpu: 400m
@@ -68,6 +68,6 @@ spec:
             - name: views
               mountPath: /var/www/html/storage/framework/views
           resources: {}
-          image: client-backend:43
+          image: client-backend:50
           ports:
             - containerPort: 9000

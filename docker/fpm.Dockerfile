@@ -18,6 +18,7 @@ RUN docker-php-ext-enable apcu
 
 FROM base AS dev
 
+COPY /.env.example .env
 COPY /composer.json composer.json
 COPY /composer.lock composer.lock
 COPY /app app

@@ -12,7 +12,7 @@ use OpenApi\Attributes as OA;
  *    version="1.0.0"
  * ),
  * @OA\Server(
- *    url="http://127.0.0.1:8000",
+ *    url="http://192.168.49.2:30009",
  *    description="local"
  * )
  */
