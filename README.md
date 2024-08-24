@@ -1,20 +1,20 @@
-# Installation
-
 ## requirements
 
 - docker
 - minikube
 - kubectl
 
+# Installation
+
 ``minikube start``
 
-``docker build . -f docker/nginx.Dockerfile -t client-frontend:dev``
+``docker build . -f docker/nginx.Dockerfile -t client-frontend:50``
 
-``docker build . -f docker/nginx.Dockerfile -t client-backend:dev``
+``docker build . -f docker/fpm.Dockerfile -t client-backend:50``
 
-``minikube image load client-backend:dev``
+``minikube image load client-backend:50``
 
-``minikube image load client-frontend:dev``
+``minikube image load client-frontend:50``
 
 ``kubectl apply -f ./k8s/``
 
@@ -31,5 +31,7 @@ example after success:
 ``Client secret: XChdmgt6UftBT6SjMkZ6q6P0MuHUxQDCaIRIoXQm``
 
 Client info need to connected microservices (Reward microservice)
+
+API documentation <a href="http://192.168.49.2:30009/api/documentation">Swagger documentation</a>
 
 
