@@ -1,0 +1,220 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Main API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "local"
+        }
+    ],
+    "paths": {
+        "/api/user/{userId}/check": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "check if user exists",
+                "operationId": "userCheck",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BooleanSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/rewards/{userId}/{rewardId}": {
+            "patch": {
+                "tags": [
+                    "Rewards"
+                ],
+                "summary": "attach reward",
+                "operationId": "attachReward",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "rewardId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "user not found"
+                    },
+                    "409": {
+                        "description": "reward already attached to this user"
+                    },
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/user/rewards/{rewardId}": {
+            "delete": {
+                "tags": [
+                    "Rewards"
+                ],
+                "summary": "detach reward",
+                "operationId": "detachReward",
+                "parameters": [
+                    {
+                        "name": "rewardId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/oauth/token": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "get client token",
+                "operationId": "oauthToken",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OAuthTokenDTO"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "client id or secret wrong",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OAuthTokenErrorSchema"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OAuthTokenSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "OAuthTokenDTO": {
+                "properties": {
+                    "grant_type": {
+                        "type": "string"
+                    },
+                    "client_id": {
+                        "type": "integer"
+                    },
+                    "scope": {
+                        "type": "string"
+                    },
+                    "client_secret": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "BooleanSchema": {
+                "properties": {
+                    "data": {
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "OAuthTokenErrorSchema": {
+                "properties": {
+                    "error": {
+                        "type": "string"
+                    },
+                    "error_description": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "OAuthTokenSchema": {
+                "properties": {
+                    "token_type": {
+                        "type": "string"
+                    },
+                    "token_expired": {
+                        "type": "integer"
+                    },
+                    "access_token": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Users",
+            "description": "Users"
+        },
+        {
+            "name": "Rewards",
+            "description": "Rewards"
+        },
+        {
+            "name": "Auth",
+            "description": "Auth"
+        }
+    ]
+}
