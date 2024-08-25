@@ -17,7 +17,7 @@ RUN docker-php-source extract \
 RUN docker-php-ext-enable apcu
 
 FROM base AS dev
-
+USER www-data
 COPY /.env.example .env
 COPY /composer.json composer.json
 COPY /composer.lock composer.lock
@@ -35,7 +35,9 @@ COPY /artisan artisan
 COPY . /var/www/html
 # COPY /composer.json composer.json
 
-RUN composer install --prefer-dist --no-ansi --no-autoloader
+RUN composer install --prefer-dist --no-ansi --no-autoloader \
+    && php artisan passport:keys \
+    && php artisan app:o-auth-keys-command
 
 COPY /bootstrap bootstrap
 COPY /app app
