@@ -35,7 +35,7 @@ COPY /artisan artisan
 COPY . /var/www/html
 # COPY /composer.json composer.json
 
-RUN composer install --prefer-dist --no-ansi --no-autoloader \
+RUN composer install --prefer-dist --no-ansi \
     && php artisan passport:keys \
     && php artisan app:o-auth-keys-command
 

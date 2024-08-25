@@ -6,6 +6,8 @@
 
 # Installation
 
+``cp .env.example .env``
+
 ``minikube start``
 
 ``docker build . -f docker/nginx.Dockerfile -t client-frontend:50``
