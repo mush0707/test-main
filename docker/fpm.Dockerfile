@@ -1,5 +1,6 @@
 FROM php:8.2-fpm-alpine AS base
 ENV EXT_APCU_VERSION=master
+
 RUN curl -vvv https://github.com/krakjoe/apcu.git
 
 RUN apk add --update zlib-dev libpng-dev libzip-dev $PHPIZE_DEPS
@@ -17,38 +18,22 @@ RUN docker-php-source extract \
 RUN docker-php-ext-enable apcu
 
 FROM base AS dev
-USER www-data
-COPY /.env.example .env
-COPY /composer.json composer.json
-COPY /composer.lock composer.lock
-COPY /app app
-COPY /bootstrap bootstrap
-COPY /config config
-COPY /artisan artisan
+USER 1001:1001
 
 FROM base AS build-fpm
 
 WORKDIR /var/www/html
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-COPY /artisan artisan
 COPY . /var/www/html
 # COPY /composer.json composer.json
 
-RUN composer install --prefer-dist --no-ansi \
-    && php artisan passport:keys \
-    && php artisan app:o-auth-keys-command
-
-COPY /bootstrap bootstrap
-COPY /app app
-COPY /config config
-COPY /routes routes
+RUN composer install --prefer-dist --no-ansi --no-autoloader
 
 
 # COPY . /var/www/html
 
 RUN composer dump-autoload -o
-
 FROM build-fpm AS fpm
 
 COPY --from=build-fpm /var/www/html /var/www/html
